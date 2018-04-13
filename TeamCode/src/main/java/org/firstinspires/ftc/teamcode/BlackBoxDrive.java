@@ -78,10 +78,10 @@ public class BlackBoxDrive extends LinearOpMode {
 
         // Loop until the op mode is stopped.
         while (!isStopRequested() && opModeIsActive()) {
-            lefty = gamepad1.left_stick_y;
-            righty = gamepad1.right_stick_y;
-            rightx = gamepad1.right_stick_x;
-            leftx = gamepad1.left_stick_x;
+            lefty = Range.clip(gamepad1.left_stick_y, -1, 1);
+            righty = Range.clip(gamepad1.right_stick_y, -1, 1);
+            rightx = Range.clip(gamepad1.right_stick_x, -1, 1);
+            leftx = Range.clip(gamepad1.left_stick_x, -1, 1);
             if (Math.abs(gamepad1.left_stick_y) > threshold) {
                 drive(lefty, lefty, -lefty, -lefty);
             } else if (Math.abs(gamepad1.left_stick_x) > threshold) {
