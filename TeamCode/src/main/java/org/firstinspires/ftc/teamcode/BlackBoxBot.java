@@ -29,15 +29,20 @@ public class BlackBoxBot {
     HardwareMap hwMap;
     ElapsedTime clock = new ElapsedTime();
     BNO055IMU imu;
+    static final double oneRotationTicks = 800;
+    static final double wheelRadius = 0.025; // in meters
+    static final double boxRadius = 0.00953 + 0.04572;
     private int leftEncoderPos = 0;
     private int centerEncoderPos = 0;
     private int rightEncoderPos = 0;
-    private int pos = 0;
+    private int deltaLeftTicks = 0;
+    private int deltaRightTicks = 0;
+    private int deltaCenterTicks = 0;
     private double x = 0;
     private double y = 0;
     private double theta = 0;
     /**
-     * plug left encoder into frontleft, right encoder into frontright, center encoder into backright (arbitary assignments)
+     * plug left encoder into frontleft, right encoder into frontright, center encoder into backleft (arbitary assignments)
      */
     private DcMotor FR = null;
     private DcMotor FL = null;
@@ -86,16 +91,25 @@ public class BlackBoxBot {
         return FR.getCurrentPosition() - rightEncoderPos;
     }
     public void resetCenterTicks() {
-        centerEncoderPos = BR.getCurrentPosition();
+        centerEncoderPos = BL.getCurrentPosition();
     }
     public int getCenterTicks() {
-        return BR.getCurrentPosition() - centerEncoderPos;
+        return BL.getCurrentPosition() - centerEncoderPos;
     }
     public void drive(double fl, double bl, double fr, double br) {
         FL.setPower(fl);
         BL.setPower(bl);
         FR.setPower(fr);
         BR.setPower(br);
+    }
+    public void updatePosition(){
+        deltaLeftTicks = getLeftTicks();
+        deltaRightTicks = getRightTicks();
+        deltaCenterTicks = getCenterTicks();
+        theta  += Math.toDegrees(((deltaLeftTicks - deltaRightTicks) / 1600.0) * (wheelRadius / boxRadius) * 2.0 * Math.PI) * (360.0 / 220.0);
+        x  += (oneRotationTicks / 360.0) * (wheelRadius / boxRadius) * ((deltaLeftTicks - deltaRightTicks) / (2.0));
+        y  += (360.0 / oneRotationTicks) * (boxRadius / wheelRadius) * ((deltaLeftTicks - deltaRightTicks) / (2.0));
+        resetTicks();
     }
     public double getX() {
      return x;

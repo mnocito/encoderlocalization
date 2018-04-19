@@ -18,27 +18,27 @@ import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 
 @TeleOp(name = "EncoderDrive")
 public class BlackBoxDrive extends LinearOpMode {
-    static final double oneRotationTicks = 800;
-    static final double wheelRadius = 0.05; // in meters
     static final double threshold = 0.3;
     private ElapsedTime runtime = new ElapsedTime();
     private double rightx = 0;
     private double leftx = 0;
     private double lefty = 0;
-    private double x = 0;
-    private double y = 0;
-    private double theta = 0;
     private BlackBoxBot bb = new BlackBoxBot();
     public void runOpMode() throws InterruptedException {
         bb.init(hardwareMap);
         telemetry.update();
         runtime.reset();
         bb.resetTicks();
+        telemetry.addData("status", "initialized");
+        telemetry.update();
         waitForStart();
         while (!isStopRequested() && opModeIsActive()) {
             telemetry.addData("Left ticks", bb.getLeftTicks());
             telemetry.addData("Center ticks", bb.getCenterTicks());
             telemetry.addData("Right ticks", bb.getRightTicks());
+            telemetry.addData("X value", bb.getX());
+            telemetry.addData("Y value", bb.getY());
+            telemetry.addData("Theta value", bb.getTheta());
             telemetry.update();
             lefty = Range.clip(gamepad1.left_stick_y, -1, 1);
             rightx = Range.clip(gamepad1.right_stick_x, -1, 1);
