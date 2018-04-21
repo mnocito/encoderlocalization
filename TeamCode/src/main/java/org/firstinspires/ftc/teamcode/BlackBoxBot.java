@@ -29,6 +29,8 @@ public class BlackBoxBot {
     HardwareMap hwMap;
     ElapsedTime clock = new ElapsedTime();
     BNO055IMU imu;
+    BNO055IMU.Parameters parameters;
+    Orientation angles;
     static final double oneRotationTicks = 800;
     static final double wheelRadius = 0.025; // in meters
     static final double boxRadius = 0.00953 + 0.04572;
@@ -48,6 +50,9 @@ public class BlackBoxBot {
     private DcMotor FL = null;
     private DcMotor BR = null;
     private DcMotor BL = null;
+    private DcMotor leftEncoderMotor = hwMap.get(DcMotor.class, "FL");
+    private DcMotor rightEncoderMotor = hwMap.get(DcMotor.class, "FR");
+    private DcMotor centerEncoderMotor = hwMap.get(DcMotor.class, "BL");
     public void init(HardwareMap ahwMap, boolean initSensors) {
         hwMap = ahwMap;
         FR = hwMap.get(DcMotor.class, "FR");
@@ -64,7 +69,7 @@ public class BlackBoxBot {
         BR.setDirection(DcMotorSimple.Direction.REVERSE);
         if (initSensors) {
             imu = hwMap.get(BNO055IMU.class, "imu");
-            BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
+            parameters = new BNO055IMU.Parameters();
             parameters.angleUnit = BNO055IMU.AngleUnit.DEGREES;
             parameters.accelUnit = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
             imu.initialize(parameters);
@@ -79,22 +84,22 @@ public class BlackBoxBot {
         resetRightTicks();
     }
     public void resetLeftTicks() {
-        leftEncoderPos = FL.getCurrentPosition();
+        leftEncoderPos = leftEncoderMotor.getCurrentPosition();
     }
     public int getLeftTicks() {
-        return FL.getCurrentPosition() - leftEncoderPos;
+        return leftEncoderMotor.getCurrentPosition() - leftEncoderPos;
     }
     public void resetRightTicks() {
-        rightEncoderPos = FR.getCurrentPosition();
+        rightEncoderPos = rightEncoderMotor.getCurrentPosition();
     }
     public int getRightTicks() {
-        return FR.getCurrentPosition() - rightEncoderPos;
+        return rightEncoderMotor.getCurrentPosition() - rightEncoderPos;
     }
     public void resetCenterTicks() {
-        centerEncoderPos = BL.getCurrentPosition();
+        centerEncoderPos = centerEncoderMotor.getCurrentPosition();
     }
     public int getCenterTicks() {
-        return BL.getCurrentPosition() - centerEncoderPos;
+        return centerEncoderMotor.getCurrentPosition() - centerEncoderPos;
     }
     public void drive(double fl, double bl, double fr, double br) {
         FL.setPower(fl);
@@ -130,7 +135,7 @@ public class BlackBoxBot {
         theta = _theta;
     }
     public double angle() {
-        Orientation angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+        angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
         return AngleUnit.DEGREES.fromUnit(angles.angleUnit, angles.firstAngle);
     }
 }
