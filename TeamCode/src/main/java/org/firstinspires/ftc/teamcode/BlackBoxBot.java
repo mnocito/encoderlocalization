@@ -33,7 +33,7 @@ public class BlackBoxBot {
     Orientation angles;
     static final double oneRotationTicks = 800;
     static final double wheelRadius = 0.025; // in meters
-    static final double wheelDistanceApart = 0.00953 + 0.04572;
+    static final double wheelDistanceApart = 0.08255;
     private int leftEncoderPos = 0;
     private int centerEncoderPos = 0;
     private int rightEncoderPos = 0;
@@ -50,15 +50,21 @@ public class BlackBoxBot {
     private DcMotor FL = null;
     private DcMotor BR = null;
     private DcMotor BL = null;
-    private DcMotor leftEncoderMotor = hwMap.get(DcMotor.class, "FL");
-    private DcMotor rightEncoderMotor = hwMap.get(DcMotor.class, "FR");
-    private DcMotor centerEncoderMotor = hwMap.get(DcMotor.class, "BL");
+    private DcMotor leftEncoderMotor = null;
+    private DcMotor rightEncoderMotor = null;
+    private DcMotor centerEncoderMotor = null;
     public void init(HardwareMap ahwMap, boolean initSensors) {
         hwMap = ahwMap;
         FR = hwMap.get(DcMotor.class, "FR");
         FL = hwMap.get(DcMotor.class, "FL");
         BR = hwMap.get(DcMotor.class, "BR");
         BL = hwMap.get(DcMotor.class, "BL");
+        leftEncoderMotor = hwMap.get(DcMotor.class, "FL");
+        rightEncoderMotor = hwMap.get(DcMotor.class, "FR");
+        centerEncoderMotor = hwMap.get(DcMotor.class, "BL");
+        leftEncoderMotor.setDirection(DcMotorSimple.Direction.FORWARD);
+        rightEncoderMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+        centerEncoderMotor.setDirection(DcMotorSimple.Direction.REVERSE);
         FR.setZeroPowerBehavior(ZERO_POWER_BEHAVIOR);
         FL.setZeroPowerBehavior(ZERO_POWER_BEHAVIOR);
         BR.setZeroPowerBehavior(ZERO_POWER_BEHAVIOR);
