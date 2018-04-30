@@ -23,7 +23,7 @@ public class BlackBoxPrint extends LinearOpMode {
             telemetry.addData("Right ticks", bb.getRightTicks());
             telemetry.addData("X value", bb.getX());
             telemetry.addData("Y value", bb.getY());
-            telemetry.addData("Theta value", bb.getTheta());
+            telemetry.addData("Theta value", Math.toDegrees(bb.getTheta()));
             telemetry.update();
             idle();
         }

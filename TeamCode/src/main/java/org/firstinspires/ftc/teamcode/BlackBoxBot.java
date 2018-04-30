@@ -33,13 +33,13 @@ public class BlackBoxBot {
     Orientation angles;
     static final double oneRotationTicks = 800;
     static final double wheelRadius = 0.025; // in meters
-    static final double boxRadius = 0.00953 + 0.04572;
+    static final double wheelDistanceApart = 0.00953 + 0.04572;
     private int leftEncoderPos = 0;
     private int centerEncoderPos = 0;
     private int rightEncoderPos = 0;
-    private int deltaLeftTicks = 0;
-    private int deltaRightTicks = 0;
-    private int deltaCenterTicks = 0;
+    private double deltaLeftDistance = 0;
+    private double deltaRightDistance = 0;
+    private double deltaCenterDistance = 0;
     private double x = 0;
     private double y = 0;
     private double theta = 0;
@@ -108,12 +108,12 @@ public class BlackBoxBot {
         BR.setPower(br);
     }
     public void updatePosition(){
-        deltaLeftTicks = getLeftTicks();
-        deltaRightTicks = getRightTicks();
-        deltaCenterTicks = getCenterTicks();
-        theta  += Math.toDegrees(((deltaLeftTicks - deltaRightTicks) / 1600.0) * (wheelRadius / boxRadius) * 2.0 * Math.PI) * (360.0 / 220.0);
-        x  += (oneRotationTicks / 360.0) * (wheelRadius / boxRadius) * ((deltaLeftTicks - deltaRightTicks) / (2.0));
-        y  += (360.0 / oneRotationTicks) * (boxRadius / wheelRadius) * ((deltaLeftTicks - deltaRightTicks) / (2.0));
+        deltaLeftDistance = (getLeftTicks() / oneRotationTicks) * 2.0 * Math.PI * wheelRadius;
+        deltaRightDistance = (getRightTicks() / oneRotationTicks) * 2.0 * Math.PI * wheelRadius;
+        deltaCenterDistance = (getCenterTicks() / oneRotationTicks) * 2.0 * Math.PI * wheelRadius;
+        x  += (((deltaLeftDistance + deltaRightDistance) / 2.0) + deltaCenterDistance) * Math.cos(theta);
+        y  += (((deltaLeftDistance + deltaRightDistance) / 2.0) + deltaCenterDistance) * Math.sin(theta);
+        theta  += .5 * (deltaLeftDistance - deltaRightDistance) / wheelDistanceApart;
         resetTicks();
     }
     public double getX() {
