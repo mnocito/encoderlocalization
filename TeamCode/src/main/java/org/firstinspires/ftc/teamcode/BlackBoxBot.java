@@ -111,8 +111,8 @@ public class BlackBoxBot {
         deltaLeftDistance = (getLeftTicks() / oneRotationTicks) * 2.0 * Math.PI * wheelRadius;
         deltaRightDistance = (getRightTicks() / oneRotationTicks) * 2.0 * Math.PI * wheelRadius;
         deltaCenterDistance = (getCenterTicks() / oneRotationTicks) * 2.0 * Math.PI * wheelRadius;
-        x  += (((deltaLeftDistance + deltaRightDistance) / 2.0) + deltaCenterDistance) * Math.cos(theta);
-        y  += (((deltaLeftDistance + deltaRightDistance) / 2.0) + deltaCenterDistance) * Math.sin(theta);
+        x  += .5 * (((deltaLeftDistance + deltaRightDistance) / 2.0) + deltaCenterDistance) * Math.cos(theta);
+        y  += .5 * (((deltaLeftDistance + deltaRightDistance) / 2.0) + deltaCenterDistance) * Math.sin(theta);
         theta  += .5 * (deltaLeftDistance - deltaRightDistance) / wheelDistanceApart;
         resetTicks();
     }
