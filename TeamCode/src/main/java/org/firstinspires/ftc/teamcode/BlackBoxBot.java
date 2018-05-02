@@ -33,7 +33,7 @@ public class BlackBoxBot {
     Orientation angles;
     static final double oneRotationTicks = 800;
     static final double wheelRadius = 0.025; // in meters
-    static final double wheelDistanceApart = 0.09144 + .02; // in meters
+    static final double wheelDistanceApart = 0.09144 + .016 * 2.0; // in meters
     private int leftEncoderPos = 0;
     private int centerEncoderPos = 0;
     private int rightEncoderPos = 0;
