@@ -34,6 +34,7 @@ public class BlackBoxDrive extends LinearOpMode {
         waitForStart();
         while (!isStopRequested() && opModeIsActive()) {
             telemetry.addData("Left ticks", bb.getLeftTicks());
+            telemetry.addData("Left distance", (bb.getLeftTicks() / bb.oneRotationTicks) * 2.0 * Math.PI * bb.wheelRadius);
             telemetry.addData("Center ticks", bb.getCenterTicks());
             telemetry.addData("Right ticks", bb.getRightTicks());
             telemetry.addData("X value", bb.getX());

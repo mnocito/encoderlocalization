@@ -33,7 +33,7 @@ public class BlackBoxBot {
     Orientation angles;
     static final double oneRotationTicks = 800;
     static final double wheelRadius = 0.025; // in meters
-    static final double wheelDistanceApart = 0.00953 + 0.04572;
+    static final double wheelDistanceApart = 0.09144 + .02; // in meters
     private int leftEncoderPos = 0;
     private int centerEncoderPos = 0;
     private int rightEncoderPos = 0;
@@ -113,12 +113,12 @@ public class BlackBoxBot {
         FR.setPower(fr);
         BR.setPower(br);
     }
-    public void updatePosition(){
+    public void updatePosition() {
         deltaLeftDistance = (getLeftTicks() / oneRotationTicks) * 2.0 * Math.PI * wheelRadius;
         deltaRightDistance = (getRightTicks() / oneRotationTicks) * 2.0 * Math.PI * wheelRadius;
         deltaCenterDistance = (getCenterTicks() / oneRotationTicks) * 2.0 * Math.PI * wheelRadius;
-        x  += (((deltaLeftDistance + deltaRightDistance) / 2.0) + deltaCenterDistance) * Math.cos(theta);
-        y  += (((deltaLeftDistance + deltaRightDistance) / 2.0) + deltaCenterDistance) * Math.sin(theta);
+        x  += (((deltaLeftDistance + deltaRightDistance) / 2.0)) * Math.cos(theta);
+        y  += (((deltaLeftDistance + deltaRightDistance) / 2.0)) * Math.sin(theta);
         theta  += (deltaLeftDistance - deltaRightDistance) / wheelDistanceApart;
         resetTicks();
     }
